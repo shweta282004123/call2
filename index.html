@@ -132,22 +132,25 @@
             const formData = new FormData(this); // Get form data
 
             // Send data to Formsubmit.co
-            fetch('https://formsubmit.co/hagawaneshweta2805@gmail.com', {
+            fetch('https://formsubmit.co/hagawaneshweta2004@gmail.com', {
                 method: 'POST',
                 body: formData
             })
             .then(response => {
                 if (response.ok) {
                     // Show Thank You message
+                    console.log("Form submitted successfully.");
                     document.getElementById('form-container').style.display = 'none';
                     document.getElementById('thank-you-message').style.display = 'block';
                 } else {
                     // Show error if response is not OK
+                    console.log("Error in form submission. Response: " + response.status);
                     alert('There was an issue with your submission. Please try again.');
                 }
             })
             .catch(error => {
                 // Catch any network or other errors
+                console.log("Network error or other error: " + error);
                 alert('Error: ' + error);
             });
         });
