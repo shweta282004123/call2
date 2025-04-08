@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Form</title>
+    <title>Form with Navbar</title>
     <style>
         /* Basic Navbar Styles */
         nav {
@@ -96,7 +96,7 @@
     <!-- Form Section (Initially Hidden) -->
     <div class="form-container" id="form-container">
         <button class="close-form-btn" onclick="closeForm()">×</button> <!-- Cross (X) icon for closing -->
-        <form id="contact-form" method="get" action="mailto:hagawaneshweta2805@gmail.com?subject=Contact Form Submission">
+        <form id="contact-form">
             <h2>Contact Form</h2>
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required><br><br>
@@ -124,6 +124,36 @@
         function closeForm() {
             document.getElementById("form-container").style.right = "-100%";
         }
+
+        // Handle form submission
+        document.getElementById('contact-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const formData = new FormData(this); // Get form data
+
+            // Send data to Formsubmit.co
+            fetch('https://formsubmit.co/hagawaneshweta2805@gmail.com', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Show Thank You message
+                    console.log("Form submitted successfully.");
+                    document.getElementById('form-container').style.display = 'none';
+                    document.getElementById('thank-you-message').style.display = 'block';
+                } else {
+                    // Show error if response is not OK
+                    console.log("Error in form submission. Response: " + response.status);
+                    alert('There was an issue with your submission. Please try again.');
+                }
+            })
+            .catch(error => {
+                // Catch any network or other errors
+                console.log("Network error or other error: " + error);
+                alert('Error: ' + error);
+            });
+        });
     </script>
 
 </body>
