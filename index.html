@@ -96,7 +96,7 @@
     <!-- Form Section (Initially Hidden) -->
     <div class="form-container" id="form-container">
         <button class="close-form-btn" onclick="closeForm()">×</button> <!-- Cross (X) icon for closing -->
-        <form id="contact-form" action="https://formsubmit.co/hagawaneshweta2805@gmail.com" method="POST">
+        <form id="contact-form">
             <h2>Contact Form</h2>
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required><br><br>
@@ -132,7 +132,7 @@
             const formData = new FormData(this); // Get form data
 
             // Send data to Formsubmit.co
-            fetch('https://formsubmit.co/your-email@example.com', {
+            fetch('https://formsubmit.co/hagawaneshweta2805@gmail.com', {
                 method: 'POST',
                 body: formData
             })
@@ -142,10 +142,12 @@
                     document.getElementById('form-container').style.display = 'none';
                     document.getElementById('thank-you-message').style.display = 'block';
                 } else {
+                    // Show error if response is not OK
                     alert('There was an issue with your submission. Please try again.');
                 }
             })
             .catch(error => {
+                // Catch any network or other errors
                 alert('Error: ' + error);
             });
         });
