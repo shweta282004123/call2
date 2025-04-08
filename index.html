@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form with Navbar</title>
+    <title>Contact Form with Formsubmit.co</title>
     <style>
         /* Basic Navbar Styles */
         nav {
@@ -84,6 +84,11 @@
             color: #4CAF50;
             margin-top: 20px;
         }
+
+        /* Hide form when submitted */
+        .form-container.submitted {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -96,7 +101,7 @@
     <!-- Form Section (Initially Hidden) -->
     <div class="form-container" id="form-container">
         <button class="close-form-btn" onclick="closeForm()">×</button> <!-- Cross (X) icon for closing -->
-        <form id="contact-form">
+        <form id="contact-form" action="https://formsubmit.co/hagawaneshweta28@gmail.com" method="POST" onsubmit="showThankYouMessage(event)">
             <h2>Contact Form</h2>
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required><br><br>
@@ -107,13 +112,16 @@
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required><br><br>
 
+            <!-- Hidden input for _next page (Thank You page) -->
+            <input type="hidden" name="_next" value="#thank-you-message">
+            
             <button type="submit">Submit</button>
         </form>
     </div>
 
     <!-- Thank You Message (Initially Hidden) -->
     <div id="thank-you-message" class="thank-you-message" style="display: none;">
-        Thank you for requesting! We will get back to you soon.
+        Thank you for requesting! 
     </div>
 
     <script>
@@ -125,35 +133,28 @@
             document.getElementById("form-container").style.right = "-100%";
         }
 
-        // Handle form submission
-        document.getElementById('contact-form').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent the default form submission
+        // Function to show the Thank You message and hide the form after submission
+        function showThankYouMessage(event) {
+            event.preventDefault();  // Prevents the default form submission
+            const form = document.getElementById("contact-form");
+            const formContainer = document.getElementById("form-container");
+            const thankYouMessage = document.getElementById("thank-you-message");
 
-            const formData = new FormData(this); // Get form data
-
-            // Send data to Formsubmit.co
-            fetch('https://formsubmit.co/hagawaneshweta2805@gmail.com', {
+            // Send the form data to Formsubmit.co via AJAX
+            const formData = new FormData(form);
+            fetch(form.action, {
                 method: 'POST',
-                body: formData
+                body: formData,
             })
             .then(response => {
-                if (response.ok) {
-                    // Show Thank You message
-                    console.log("Form submitted successfully.");
-                    document.getElementById('form-container').style.display = 'none';
-                    document.getElementById('thank-you-message').style.display = 'block';
-                } else {
-                    // Show error if response is not OK
-                    console.log("Error in form submission. Response: " + response.status);
-                    alert('There was an issue with your submission. Please try again.');
-                }
+                // Hide the form and show the thank you message
+                formContainer.classList.add('submitted');
+                thankYouMessage.style.display = 'block';
             })
             .catch(error => {
-                // Catch any network or other errors
-                console.log("Network error or other error: " + error);
-                alert('Error: ' + error);
+                alert("There was an error submitting your form. Please try again.");
             });
-        });
+        }
     </script>
 
 </body>
