@@ -1,5 +1,9 @@
-<html>
-<body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form with Navbar</title>
     <style>
         /* Basic Navbar Styles */
         nav {
@@ -34,6 +38,22 @@
             box-sizing: border-box;
         }
 
+        /* Close Button Styles (Cross icon in the top right corner) */
+        .close-form-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 30px;
+            color: #333;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+        }
+
+        .close-form-btn:hover {
+            color: #f44336;
+        }
+
         .form-container form {
             display: flex;
             flex-direction: column;
@@ -57,17 +77,12 @@
             background-color: #45a049;
         }
 
-        .close-form-btn {
-            background-color: #f44336;
-            color: white;
-            padding: 10px;
-            border: none;
-            cursor: pointer;
+        /* Thank you message */
+        .thank-you-message {
+            text-align: center;
+            font-size: 18px;
+            color: #4CAF50;
             margin-top: 20px;
-        }
-
-        .close-form-btn:hover {
-            background-color: #d32f2f;
         }
     </style>
 </head>
@@ -80,7 +95,8 @@
 
     <!-- Form Section (Initially Hidden) -->
     <div class="form-container" id="form-container">
-        <form action="https://formsubmit.co/hagawaneshweta2805@gmail.com" method="POST" id="contact-form">
+        <button class="close-form-btn" onclick="closeForm()">×</button> <!-- Cross (X) icon for closing -->
+        <form id="contact-form" action="https://formsubmit.co/hagawaneshweta2805@gmail.com" method="POST">
             <h2>Contact Form</h2>
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required><br><br>
@@ -93,7 +109,11 @@
 
             <button type="submit">Submit</button>
         </form>
-        <button class="close-form-btn" onclick="closeForm()">Close</button>
+    </div>
+
+    <!-- Thank You Message (Initially Hidden) -->
+    <div id="thank-you-message" class="thank-you-message" style="display: none;">
+        Thank you for requesting! We will get back to you soon.
     </div>
 
     <script>
@@ -104,8 +124,32 @@
         function closeForm() {
             document.getElementById("form-container").style.right = "-100%";
         }
-    </script>
 
+        // Handle form submission
+        document.getElementById('contact-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const formData = new FormData(this); // Get form data
+
+            // Send data to Formsubmit.co
+            fetch('https://formsubmit.co/your-email@example.com', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Show Thank You message
+                    document.getElementById('form-container').style.display = 'none';
+                    document.getElementById('thank-you-message').style.display = 'block';
+                } else {
+                    alert('There was an issue with your submission. Please try again.');
+                }
+            })
+            .catch(error => {
+                alert('Error: ' + error);
+            });
+        });
+    </script>
 
 </body>
 </html>
